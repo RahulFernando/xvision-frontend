@@ -1,23 +1,29 @@
-/* eslint-disable max-len */
 import React, { FC, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
 
 // components
 import Loading from '../components/loading/Loading';
 
 // routes
-import { publicRoutes } from './routes';
-
-const USER = {
-  token: null,
-  user: 'user',
-};
+import { publicRoutes, privateRoutes } from './routes';
 
 const AppRoute: FC = () => (
   <Suspense fallback={<Loading />}>
-    <Routes>
-      {!USER.token && publicRoutes.map(({ path, element, key }) => <Route key={key} path={path} element={element} />)}
-    </Routes>
+    <UnauthenticatedTemplate>
+      <Routes>
+        {publicRoutes.map(({ path, element, key }) => (
+          <Route key={key} path={path} element={element} />
+        ))}
+      </Routes>
+    </UnauthenticatedTemplate>
+    <AuthenticatedTemplate>
+      <Routes>
+        {privateRoutes.map(({ path, element, key }) => (
+          <Route key={key} path={path} element={element} />
+        ))}
+      </Routes>
+    </AuthenticatedTemplate>
   </Suspense>
 );
 

@@ -1,22 +1,19 @@
 import React, { FC } from 'react';
-import { useDispatch } from 'react-redux';
 import {
   Grid, Typography, Button,
 } from '@mui/material';
-import { AppDispatch } from '../../store/store';
+import { useMsal } from '@azure/msal-react';
 
 // commponents
 import Modal from '../../components/modal/Modal';
 
-// reducers
-import { setModal } from '../../reducers/commonSlice';
-
 const Auth: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const { instance } = useMsal();
 
   const buttonClickHandler = () => {
-    dispatch(setModal({ open: true, title: 'Login' }));
+    instance.loginPopup();
   };
+
   return (
     <>
       <Grid container spacing={2}>
